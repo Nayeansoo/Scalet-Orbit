@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5151877092660529857}
   - component: {fileID: -1837452314103648018}
   - component: {fileID: -3987837777500287047}
+  - component: {fileID: 1586010343249686946}
   m_Layer: 0
   m_Name: Sub_bullet
   m_TagString: Untagged
@@ -171,3 +172,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62119eb44a15f7b45a861f8bce095604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 12
+--- !u!114 &1586010343249686946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8046052546497412752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bf0af4c0f57df144a0dc4d6286cb991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 7650275092990600295, guid: e4878191357b9d44594bb4ea6b91b7f5, type: 3}
+  speed: 12

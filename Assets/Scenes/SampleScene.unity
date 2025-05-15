@@ -511,6 +511,7 @@ GameObject:
   - component: {fileID: 422581152}
   - component: {fileID: 422581151}
   - component: {fileID: 422581153}
+  - component: {fileID: 422581154}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -569,6 +570,22 @@ MonoBehaviour:
   Po2Prefab: {fileID: 597372173306100713, guid: ada8c3f5ab22ec248bd350054619029a, type: 3}
   Po3Prefab: {fileID: 1094613086441768368, guid: 669f9b3621fcfe1419ca1c171860d06a, type: 3}
   Po4Prefab: {fileID: 7746689796474951550, guid: 644045c5e670efc438dffb4e1064b3e3, type: 3}
+--- !u!114 &422581154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422581150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50f7caca39fa3343998da0838b5340c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sub1: {fileID: 6272951995258318768, guid: 95a0284b32469d841b397f53e536d703, type: 3}
+  sub2: {fileID: 6272951995258318768, guid: 95a0284b32469d841b397f53e536d703, type: 3}
+  sub3: {fileID: 6272951995258318768, guid: 95a0284b32469d841b397f53e536d703, type: 3}
+  sub4: {fileID: 6272951995258318768, guid: 95a0284b32469d841b397f53e536d703, type: 3}
 --- !u!1 &511575474
 GameObject:
   m_ObjectHideFlags: 0
