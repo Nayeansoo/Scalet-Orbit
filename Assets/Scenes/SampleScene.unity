@@ -972,8 +972,6 @@ MonoBehaviour:
   - {fileID: 641626325}
   - {fileID: 594683476}
   - {fileID: 511575475}
-  startIndex: 0
-  endIndex: 2
 --- !u!1 &594683475
 GameObject:
   m_ObjectHideFlags: 0
