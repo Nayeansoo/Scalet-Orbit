@@ -1,100 +1,96 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class Sub : MonoBehaviour
 {
+    public GameObject[] subPrefabs;
     private GameObject player;
-    public GameObject sub1;
-    public GameObject sub2;
-    public GameObject sub3;
-    public GameObject sub4;
+    private Player playerScript;
 
-    private Vector3 playerPos;
-    private Player Icount;
+    private int lastCount = -1;
+    private bool lastShift = false;
 
-    private int previousItemCount = 0;
-    private bool shiftPressedLastFrame = false;
+    private List<GameObject> currentSubs = new List<GameObject>();
 
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-
         if (player != null)
         {
-            playerPos = player.transform.position;
-            Icount = player.GetComponent<Player>();
+            playerScript = player.GetComponent<Player>();
+
+            int count = playerScript.ItemCount;
+            bool isShift = Input.GetKey(KeyCode.LeftShift);
+            UpdateSubs(count, isShift);
+
+            lastCount = count;
+            lastShift = isShift;
         }
         else
         {
-            Debug.LogError("Player 오브젝트 어디갔노.");
+            Debug.LogError("Player 어디갔노");
         }
     }
+
 
     void FixedUpdate()
     {
-        if (Icount == null) return;
+        if (playerScript == null) return;
 
-        playerPos = player.transform.position;
-        int currentItemCount = Icount.ItemCount;
-        bool shiftPressed = Input.GetKey(KeyCode.LeftShift);
+        int count = playerScript.ItemCount;
+        bool isShift = Input.GetKey(KeyCode.LeftShift);
 
-        if (currentItemCount != previousItemCount || shiftPressed != shiftPressedLastFrame)
+        if (count != lastCount || isShift != lastShift)
         {
-            SpawnSubs(currentItemCount, shiftPressed);
-
-            previousItemCount = currentItemCount;
-            shiftPressedLastFrame = shiftPressed;
+            UpdateSubs(count, isShift);
+            lastCount = count;
+            lastShift = isShift;
         }
     }
 
-    void SpawnSubs(int count, bool shift)
+    void UpdateSubs(int count, bool shift)
     {
-        if (count == 1)
+        // 기존 sub들 제거
+        foreach (GameObject obj in currentSubs)
         {
-            Instantiate(sub1, new Vector3(0, playerPos.y + 1, 0), Quaternion.identity);
-
-            if (shift)
-            Instantiate(sub1, new Vector3(0, playerPos.y + 0.8f, 0), Quaternion.identity);
+            Destroy(obj);
         }
-        else if (count == 2)
-        {
-            Instantiate(sub1, new Vector3(playerPos.x - 1, 0, 0), Quaternion.identity);
-            Instantiate(sub2, new Vector3(playerPos.x + 1, 0, 0), Quaternion.identity);
+        currentSubs.Clear();
 
-            if (shift)
-            {
-                Instantiate(sub1, new Vector3(playerPos.x - 0.6f, 0, 0), Quaternion.identity);
-                Instantiate(sub2, new Vector3(playerPos.x + 0.6f, 0, 0), Quaternion.identity);
-            }
+        Vector3[] offsets = new Vector3[4];
+
+        if (shift)
+        {
+            offsets[0] = new Vector3(0f, 0.8f, 0f);
+            offsets[1] = new Vector3(-0.6f, 0f, 0f);
+            offsets[2] = new Vector3(0.6f, 0f, 0f);
+            offsets[3] = new Vector3(0f, -0.8f, 0f);
         }
-        else if (count == 3)
+        else
         {
-            Instantiate(sub1, new Vector3(playerPos.x - 1, 0, 0), Quaternion.identity);
-            Instantiate(sub2, new Vector3(playerPos.x + 1, 0, 0), Quaternion.identity);
-            Instantiate(sub3, new Vector3(0, playerPos.y + 1, 0), Quaternion.identity);
-
-            if (shift)
-            {
-                Instantiate(sub1, new Vector3(playerPos.x - 0.6f, 0, 0), Quaternion.identity);
-                Instantiate(sub2, new Vector3(playerPos.x + 0.6f, 0, 0), Quaternion.identity);
-                Instantiate(sub3, new Vector3(0, playerPos.y + 0.8f, 0), Quaternion.identity);
-            }
+            offsets[0] = new Vector3(0f, 1f, 0f);
+            offsets[1] = new Vector3(-1f, 0f, 0f);
+            offsets[2] = new Vector3(1f, 0f, 0f);
+            offsets[3] = new Vector3(0f, -1f, 0f);
         }
-        else if (count == 4)
-        {
-            Instantiate(sub1, new Vector3(playerPos.x - 1, 0, 0), Quaternion.identity);
-            Instantiate(sub2, new Vector3(playerPos.x - 0.55f, playerPos.y + 1, 0), Quaternion.identity);
-            Instantiate(sub3, new Vector3(playerPos.x + 0.55f, playerPos.y + 1, 0), Quaternion.identity);
-            Instantiate(sub1, new Vector3(playerPos.x + 1, 0, 0), Quaternion.identity);
 
-            if (shift)
+        // sub 생성 및 설정
+        for (int i = 0; i < count && i < subPrefabs.Length; i++)
+        {
+            Vector3 spawnPos = player.transform.position + offsets[i];
+            GameObject sub = Instantiate(subPrefabs[i], spawnPos, Quaternion.identity);
+
+            FollowPlayer follow = sub.GetComponent<FollowPlayer>();
+            if (follow != null)
             {
-                Instantiate(sub1, new Vector3(playerPos.x - 0.6f, 0, 0), Quaternion.identity);
-                Instantiate(sub2, new Vector3(playerPos.x - 0.4f, playerPos.y + 0.8f, 0), Quaternion.identity);
-                Instantiate(sub3, new Vector3(playerPos.x + 0.4f, playerPos.y + 0.8f, 0), Quaternion.identity);
-                Instantiate(sub1, new Vector3(playerPos.x + 0.6f, 0, 0), Quaternion.identity);
+                follow.target = player.transform;
+                follow.offset = offsets[i];
             }
+
+            sub.transform.DOMove(spawnPos, 0.1f).SetEase(Ease.OutBounce);
+            currentSubs.Add(sub);
         }
     }
 }
