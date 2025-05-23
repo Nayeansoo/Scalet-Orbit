@@ -613,7 +613,7 @@ Transform:
   m_GameObject: {fileID: 511575474}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.35, y: 40.01421, z: 0}
+  m_LocalPosition: {x: -3.35, y: 39.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -660,7 +660,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 383c1ad9606a8ea40b00fc7d57fa46fd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6fcc9ed2935272b49a986098fa32653e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -986,8 +986,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  sprites:
-  - {fileID: 641626325}
+  startBackground: {fileID: 641626325}
+  repeatBackgrounds:
   - {fileID: 594683476}
   - {fileID: 511575475}
 --- !u!1 &594683475
@@ -1016,7 +1016,7 @@ Transform:
   m_GameObject: {fileID: 594683475}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.35, y: 0, z: 0}
+  m_LocalPosition: {x: -3.35, y: 18.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1063,7 +1063,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 383c1ad9606a8ea40b00fc7d57fa46fd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6fcc9ed2935272b49a986098fa32653e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1214,7 +1214,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 383c1ad9606a8ea40b00fc7d57fa46fd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1b1b537128394ac41a24927e53b3d6da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1234,7 +1234,7 @@ Transform:
   m_GameObject: {fileID: 641626323}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.35, y: -40.01421, z: 0}
+  m_LocalPosition: {x: -3.35, y: 1.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

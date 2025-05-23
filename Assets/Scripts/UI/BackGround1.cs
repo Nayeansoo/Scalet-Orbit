@@ -3,39 +3,52 @@
 public class BackGround1 : MonoBehaviour
 {
     public float speed = 2f;
-    public Transform[] sprites;
+    public Transform startBackground; // Start 배경
+    public Transform[] repeatBackgrounds; // 반복 배경들
 
-    private float spriteHeight;
+    private float startHeight;
+    private float repeatHeight;
+    private bool isStartScrolling = true;
 
     void Start()
     {
-        if (sprites.Length == 0) return;
+        if (repeatBackgrounds.Length == 0 || startBackground == null) return;
 
-        spriteHeight = sprites[0].GetComponent<SpriteRenderer>().bounds.size.y;
+        startHeight = startBackground.GetComponent<SpriteRenderer>().bounds.size.y;
+        repeatHeight = repeatBackgrounds[0].GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
     void Update()
     {
-        for (int i = 0; i < sprites.Length; i++)
+        if (isStartScrolling)
         {
-            sprites[i].Translate(Vector3.down * speed * Time.deltaTime);
+            startBackground.Translate(Vector3.down * speed * Time.deltaTime);
 
-            if (sprites[i].position.y < -spriteHeight)
+            if (startBackground.position.y < -startHeight)
             {
-                float highestY = GetHighestSpriteY();
+                isStartScrolling = false;
+            }
+        }
+        for (int i = 0; i < repeatBackgrounds.Length; i++)
+        {
+            repeatBackgrounds[i].Translate(Vector3.down * speed * Time.deltaTime);
 
-                sprites[i].position = new Vector3(sprites[i].position.x, highestY + spriteHeight, sprites[i].position.z);
+            if (repeatBackgrounds[i].position.y < -repeatHeight)
+            {
+                float highestY = GetHighestRepeatY();
+                repeatBackgrounds[i].position = new Vector3(repeatBackgrounds[i].position.x, highestY + repeatHeight, repeatBackgrounds[i].position.z);
             }
         }
     }
-    float GetHighestSpriteY()
+
+    float GetHighestRepeatY()
     {
-        float highestY = sprites[0].position.y;
-        for (int i = 1; i < sprites.Length; i++)
+        float highestY = repeatBackgrounds[0].position.y;
+        for (int i = 1; i < repeatBackgrounds.Length; i++)
         {
-            if (sprites[i].position.y > highestY)
+            if (repeatBackgrounds[i].position.y > highestY)
             {
-                highestY = sprites[i].position.y;
+                highestY = repeatBackgrounds[i].position.y;
             }
         }
         return highestY;

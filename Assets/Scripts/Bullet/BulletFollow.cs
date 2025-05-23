@@ -3,7 +3,7 @@
 public class BulletFollow : MonoBehaviour
 {
     public Transform target;
-    public float speed = 10f;
+    public float speed;
 
     private Rigidbody2D rb;
 
