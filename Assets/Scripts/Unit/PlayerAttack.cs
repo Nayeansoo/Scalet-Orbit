@@ -26,7 +26,6 @@ public class PlayerAttack : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Z))
             {
-                Debug.Log("총알발사");
                 GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
                 GameObject nearestEnemy = null;

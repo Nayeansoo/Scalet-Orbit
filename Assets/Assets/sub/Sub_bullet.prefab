@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 1189847541802119927}
   - component: {fileID: 5151877092660529857}
   - component: {fileID: -1837452314103648018}
-  - component: {fileID: 718509860389078743}
   - component: {fileID: 564923261013554668}
+  - component: {fileID: 4459202901557650237}
   m_Layer: 0
   m_Name: Sub_bullet
-  m_TagString: Bullet
+  m_TagString: subBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.4771705, y: -0.43748668, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.71, y: 0.71, z: 0.71}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -120,7 +120,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0022979379, y: 0.33548468}
+  m_Offset: {x: -0.0022979379, y: 0.37527344}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -131,7 +131,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.19244087, y: 0.6290306}
+  m_Size: {x: 0.19244087, y: 0.4138766}
   m_EdgeRadius: 0
 --- !u!50 &-1837452314103648018
 Rigidbody2D:
@@ -160,19 +160,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &718509860389078743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8046052546497412752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1f89174f3a609649884850ff8b1be57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 12
 --- !u!114 &564923261013554668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,4 +173,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 7650275092990600295, guid: e4878191357b9d44594bb4ea6b91b7f5, type: 3}
+  speed: 9
+--- !u!114 &4459202901557650237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8046052546497412752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62119eb44a15f7b45a861f8bce095604, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   speed: 12

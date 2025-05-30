@@ -6,6 +6,7 @@ public class GameSystem : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject bulletPrefab;
     public GameObject bulletPrefab1;
+    public GameObject Boss1;
 
     private GameObject SpawnEnemy(Vector3 position)
     {
@@ -32,7 +33,11 @@ public class GameSystem : MonoBehaviour
         yield return StartCoroutine(Pattern5());
         yield return StartCoroutine(Pattern6());
         yield return new WaitForSeconds(2f);
-        //yield return StartCoroutine(Pattern7());
+        yield return StartCoroutine(Pattern7());
+        yield return new WaitForSeconds(2.5f);
+        yield return StartCoroutine(Pattern8());
+        yield return new WaitForSeconds(1.5f);
+        yield return StartCoroutine(Patternover());
     }
 
     IEnumerator HomingAfterDelay(GameObject bullet, float delay, float speed)
@@ -382,7 +387,7 @@ public class GameSystem : MonoBehaviour
 
         for (int i = 0; i < enemyCount; i++)
         {
-            Vector3 spawnPos = new Vector3(-10f, 2f + i * 0.5f, 0);
+            Vector3 spawnPos = new Vector3(-10f, 4f + i * 0.65f, 0);
             GameObject enemy = SpawnEnemy(spawnPos);
 
             StartCoroutine(CurveInOutMove7(enemy, 3f));
@@ -391,29 +396,35 @@ public class GameSystem : MonoBehaviour
 
         yield return new WaitForSeconds(6f);
     }
-
     IEnumerator CurveInOutMove7(GameObject enemy, float duration)
     {
         float elapsed = 0f;
         float frequency = 2f;
         float amplitude = 1.5f;
 
+        float fireTimer = 0f;
+        float fireInterval = 0.5f;
+
         while (elapsed < duration)
         {
             if (enemy == null) yield break;
 
             float x = Mathf.Lerp(-10f, 0f, elapsed / duration);
-            float y = Mathf.Sin(x * frequency) * amplitude;
+            float y = Mathf.Sin(x * frequency) * amplitude + 4f;
             enemy.transform.position = new Vector3(x, y, 0);
+
+            fireTimer += Time.deltaTime;
+            if (fireTimer >= fireInterval)
+            {
+                FireBulletCircle(enemy.transform.position);
+                fireTimer = 0f;
+            }
 
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        yield return new WaitForSeconds(1.5f);
-
-        StartCoroutine(BulletPattern_Circle7(enemy, 0.3f));
-
+        yield return StartCoroutine(BulletPattern_Circle7(enemy, 0.3f));
         yield return new WaitForSeconds(2f);
 
         elapsed = 0f;
@@ -422,7 +433,7 @@ public class GameSystem : MonoBehaviour
             if (enemy == null) yield break;
 
             float x = Mathf.Lerp(0f, 10f, elapsed / duration);
-            float y = Mathf.Sin(x * frequency) * amplitude;
+            float y = Mathf.Sin(x * frequency) * amplitude + 4f;
             enemy.transform.position = new Vector3(x, y, 0);
 
             elapsed += Time.deltaTime;
@@ -431,16 +442,36 @@ public class GameSystem : MonoBehaviour
 
         Destroy(enemy);
     }
+    void FireBulletCircle(Vector3 position)
+    {
+        int count = 10;
+        float angleStep = 360f / count;
 
+        for (int i = 0; i < count; i++)
+        {
+            float angle = angleStep * i;
+            float rad = Mathf.Deg2Rad * angle;
+            Vector3 dir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
+
+            GameObject bullet = Instantiate(bulletPrefab1, position, Quaternion.identity);
+            bullet.GetComponent<Rigidbody2D>().velocity = dir * 3f;
+        }
+    }
     IEnumerator BulletPattern_Circle7(GameObject enemy, float fireInterval)
     {
+        if (enemy == null) yield break;
+
         int count = 18;
         float baseAngle = 0f;
 
         for (int i = 0; i < 3; i++)
         {
+            if (enemy == null) yield break;
+
             for (int j = 0; j < count; j++)
             {
+                if (enemy == null) yield break;
+
                 float angle = baseAngle + (360f / count) * j;
                 float rad = Mathf.Deg2Rad * angle;
                 Vector3 dir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
@@ -451,6 +482,109 @@ public class GameSystem : MonoBehaviour
 
             baseAngle += 15f;
             yield return new WaitForSeconds(fireInterval);
+        }
+    }
+
+    IEnumerator Pattern8()
+    {
+        int enemyCount = 5;
+        float interval = 0.5f;
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            Vector3 spawnPos = new Vector3(10f, 4f + i * 0.65f, 0);
+            GameObject enemy = SpawnEnemy(spawnPos);
+
+            StartCoroutine(CurveInOutMove8(enemy, 3f));
+            yield return new WaitForSeconds(interval);
+        }
+        yield return new WaitForSeconds(6f);
+    }
+    IEnumerator CurveInOutMove8(GameObject enemy, float duration)
+    {
+        float elapsed = 0f;
+        float frequency = 2f;
+        float amplitude = 1.5f;
+        float fireTimer = 0f;
+        float fireInterval = 0.5f;
+        float midStopX = -6.5f;
+
+        while (elapsed < duration)
+        {
+            if (enemy == null) yield break;
+
+            float x = Mathf.Lerp(10f, midStopX, elapsed / duration);
+            float y = Mathf.Sin(x * frequency) * amplitude + 4f;
+            enemy.transform.position = new Vector3(x, y, 0);
+
+            fireTimer += Time.deltaTime;
+            if (fireTimer >= fireInterval)
+            {
+                FireBulletCircle(enemy.transform.position);
+                fireTimer = 0f;
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return StartCoroutine(BulletPattern_Circle8(enemy, 0.3f));
+        yield return new WaitForSeconds(2f);
+
+        elapsed = 0f;
+        while (elapsed < duration)
+        {
+            if (enemy == null) yield break;
+
+            float x = Mathf.Lerp(midStopX, -10f, elapsed / duration);
+            float y = Mathf.Sin(x * frequency) * amplitude + 4f;
+            enemy.transform.position = new Vector3(x, y, 0);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(enemy);
+    }
+    IEnumerator BulletPattern_Circle8(GameObject enemy, float fireInterval)
+    {
+        if (enemy == null) yield break;
+
+        int count = 18;
+        float baseAngle = 0f;
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (enemy == null) yield break;
+
+            for (int j = 0; j < count; j++)
+            {
+                if (enemy == null) yield break;
+
+                float angle = baseAngle + (360f / count) * j;
+                float rad = Mathf.Deg2Rad * angle;
+                Vector3 dir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
+
+                GameObject bullet = Instantiate(bulletPrefab1, enemy.transform.position, Quaternion.identity);
+                bullet.GetComponent<Rigidbody2D>().velocity = dir * 4f;
+            }
+
+            baseAngle += 15f;
+            yield return new WaitForSeconds(fireInterval);
+        }
+    }
+
+    IEnumerator Patternover()
+    {
+        SomeEventOrFunction();
+        yield return null;
+    }
+    void SomeEventOrFunction()
+    {
+        CameraMove cam = Camera.main.GetComponent<CameraMove>();
+        if (cam != null)
+        {
+            cam.Play();
         }
     }
 

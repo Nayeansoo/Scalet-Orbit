@@ -5,36 +5,35 @@ using UnityEngine;
 public class Sub_Attack : MonoBehaviour
 {
     public GameObject bullet;
+    public GameObject BigGun;
     public GameObject Player;
     public Transform pos;
-
     public float cooltime;
+    public float Bigcooltime;
     private float curtime;
+    private float Bigcurtime;
+
+    private Player Icount;
 
     void Start()
     {
-
+        Icount = Player.GetComponent<Player>();
     }
 
     void Update()
     {
-        if (curtime < 0)
-        {
-                if (Input.GetKey(KeyCode.Z))
-                {
-                    Instantiate(bullet, pos.position, transform.rotation);
-                }
-                curtime = cooltime;
-        }
         curtime -= Time.deltaTime;
 
         if (curtime <= 0)
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            bool zPressed = Input.GetKey(KeyCode.Z);
+            bool shiftPressed = Input.GetKey(KeyCode.LeftShift);
+
+            if (zPressed || shiftPressed)
             {
                 Debug.Log("총알발사");
-                GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
+                GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
                 GameObject nearestEnemy = null;
                 float shortestDistance = Mathf.Infinity;
 
@@ -61,8 +60,10 @@ public class Sub_Attack : MonoBehaviour
                         followScript.target = nearestEnemy.transform;
                     }
                 }
+
+                curtime = cooltime;
             }
-            curtime = cooltime;
         }
     }
+
 }

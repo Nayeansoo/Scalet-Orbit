@@ -6,91 +6,110 @@ using UnityEngine;
 public class Sub : MonoBehaviour
 {
     public GameObject[] subPrefabs;
+
     private GameObject player;
     private Player playerScript;
 
     private int lastCount = -1;
     private bool lastShift = false;
 
-    private List<GameObject> currentSubs = new List<GameObject>();
+    private List<GameObject> currentSubs = new();
+    private bool initialized = false;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
-        if (player != null)
-        {
-            playerScript = player.GetComponent<Player>();
-
-            int count = playerScript.ItemCount;
-            bool isShift = Input.GetKey(KeyCode.LeftShift);
-            UpdateSubs(count, isShift);
-
-            lastCount = count;
-            lastShift = isShift;
-        }
-        else
-        {
-            Debug.LogError("Player 어디갔노");
-        }
+        StartCoroutine(WaitAndInitialize());
     }
 
-
-    void FixedUpdate()
+    void Update()
     {
-        if (playerScript == null) return;
+        if (!initialized || player == null || playerScript == null) return;
 
         int count = playerScript.ItemCount;
         bool isShift = Input.GetKey(KeyCode.LeftShift);
 
-        if (count != lastCount || isShift != lastShift)
-        {
+        if (count == lastCount && isShift == lastShift) return;
+
+        if (count < 1)
+            ClearSubs();
+        else
             UpdateSubs(count, isShift);
-            lastCount = count;
-            lastShift = isShift;
+
+        lastCount = count;
+        lastShift = isShift;
+    }
+
+    IEnumerator WaitAndInitialize()
+    {
+        while (player == null || playerScript == null)
+        {
+            player = GameObject.FindWithTag("Player");
+            if (player != null)
+                playerScript = player.GetComponent<Player>();
+
+            yield return null;
         }
+
+        while (player.transform.position == Vector3.zero)
+            yield return null;
+
+        initialized = true;
+
+        int count = playerScript.ItemCount;
+        bool isShift = Input.GetKey(KeyCode.LeftShift);
+
+        if (count >= 1)
+            UpdateSubs(count, isShift);
+
+        lastCount = count;
+        lastShift = isShift;
     }
 
     void UpdateSubs(int count, bool shift)
     {
-        // 기존 sub들 제거
-        foreach (GameObject obj in currentSubs)
-        {
-            Destroy(obj);
-        }
-        currentSubs.Clear();
+        ClearSubs();
 
-        Vector3[] offsets = new Vector3[4];
+        Vector3[] baseOffsets = shift
+            ? new[] {
+                new Vector3(0f, 0.8f, 0f),
+                new Vector3(-0.6f, 0f, 0f),
+                new Vector3(0.6f, 0f, 0f),
+                new Vector3(0f, -0.8f, 0f)
+              }
+            : new[] {
+                new Vector3(0f, 1f, 0f),
+                new Vector3(-1f, 0f, 0f),
+                new Vector3(1f, 0f, 0f),
+                new Vector3(0f, -1f, 0f)
+              };
 
-        if (shift)
-        {
-            offsets[0] = new Vector3(0f, 0.8f, 0f);
-            offsets[1] = new Vector3(-0.6f, 0f, 0f);
-            offsets[2] = new Vector3(0.6f, 0f, 0f);
-            offsets[3] = new Vector3(0f, -0.8f, 0f);
-        }
-        else
-        {
-            offsets[0] = new Vector3(0f, 1f, 0f);
-            offsets[1] = new Vector3(-1f, 0f, 0f);
-            offsets[2] = new Vector3(1f, 0f, 0f);
-            offsets[3] = new Vector3(0f, -1f, 0f);
-        }
-
-        // sub 생성 및 설정
         for (int i = 0; i < count && i < subPrefabs.Length; i++)
         {
-            Vector3 spawnPos = player.transform.position + offsets[i];
+            Vector3 spawnPos = player.transform.position + baseOffsets[i];
             GameObject sub = Instantiate(subPrefabs[i], spawnPos, Quaternion.identity);
 
-            FollowPlayer follow = sub.GetComponent<FollowPlayer>();
-            if (follow != null)
+            if (sub.TryGetComponent(out FollowPlayer follow))
             {
                 follow.target = player.transform;
-                follow.offset = offsets[i];
+                follow.offset = baseOffsets[i];
             }
 
             sub.transform.DOMove(spawnPos, 0.1f).SetEase(Ease.OutBounce);
             currentSubs.Add(sub);
         }
+    }
+
+    void ClearSubs()
+    {
+        foreach (var obj in currentSubs)
+        {
+            if (obj != null) Destroy(obj);
+        }
+        currentSubs.Clear();
     }
 }

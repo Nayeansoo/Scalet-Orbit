@@ -14,7 +14,6 @@ public class Bullet : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("명중");
             DestoryBullet();
         }
     }

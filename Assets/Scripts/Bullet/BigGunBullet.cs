@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +20,7 @@ public class BigGunBullet : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("¸íÁß");
+            Debug.Log("í•„ì‚´ê¸° ëª…ì¤‘");
             DestoryBullet();
         }
     }

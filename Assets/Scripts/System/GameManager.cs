@@ -7,12 +7,13 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public GameObject playerPrefab;
-    private Player player;
-
     public GameObject HP1Prefab, HP2Prefab, HP3Prefab, HP4Prefab, HP5Prefab, HP6Prefab;
     public GameObject GameOverCanvas;
+    [SerializeField] private GameObject subSystemPrefab;
 
+    private Player player;
     private GameObject[] hpIcons = new GameObject[6];
+    private GameObject subSystemInstance;
 
     void Awake()
     {
@@ -62,8 +63,16 @@ public class GameManager : MonoBehaviour
 
     void SpawnPlayer()
     {
-        GameObject playerObj = Instantiate(playerPrefab, new Vector2(-3.53f, -3.36f), Quaternion.identity);
+        var playerObj = Instantiate(playerPrefab, new Vector2(-3.53f, -3.36f), Quaternion.identity);
         player = playerObj.GetComponent<Player>();
+    }
+
+    void SpawnSubSystem()
+    {
+        if (subSystemInstance != null)
+            Destroy(subSystemInstance);
+
+        subSystemInstance = Instantiate(subSystemPrefab);
     }
 
     public void RestartScene()
@@ -79,14 +88,22 @@ public class GameManager : MonoBehaviour
             player = null;
         }
 
+        if (subSystemInstance != null)
+        {
+            Destroy(subSystemInstance);
+            subSystemInstance = null;
+        }
+
+        // 조금 대기해서 모든 객체 완전히 제거
+        yield return new WaitForSeconds(0.1f);
+
         SceneManager.LoadScene("SampleScene");
-        yield return null;
     }
+
 
     IEnumerator SpawnHPIcons()
     {
-        Vector3[] positions = new Vector3[]
-        {
+        Vector3[] positions = {
             new Vector3(6.36f, -0.6f, 0),
             new Vector3(6.817f, -0.855f, 0),
             new Vector3(6.793693f, -1.349f, 0),
@@ -117,6 +134,9 @@ public class GameManager : MonoBehaviour
             if (hpIcons[i] != null)
                 hpIcons[i].SetActive(i < player.hp);
         }
+
+        if (subSystemInstance == null && player.ItemCount > 0)
+            SpawnSubSystem();
     }
 
     public void GameOver()
@@ -129,7 +149,7 @@ public class GameManager : MonoBehaviour
 
         GameOverCanvas.SetActive(true);
 
-        GameOver gameOverScript = GameOverCanvas.GetComponentInChildren<GameOver>();
+        var gameOverScript = GameOverCanvas.GetComponentInChildren<GameOver>();
         if (gameOverScript != null)
         {
             gameOverScript.StartCoroutine("GameOverText");
@@ -137,8 +157,5 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public Player GetPlayer()
-    {
-        return player;
-    }
+    public Player GetPlayer() => player;
 }

@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
         speed = 13;
         hp = 6;
         DontDestroyOnLoad(this.gameObject);
+        ItemCount = 0;
     }
 
     private void Update()

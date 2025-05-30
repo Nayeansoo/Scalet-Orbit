@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1929189502501109205}
   - component: {fileID: 4596368790043152694}
   - component: {fileID: 7222572287258926801}
+  - component: {fileID: -5982922183815617525}
   m_Layer: 0
   m_Name: Boss1
   m_TagString: Enemy
@@ -180,3 +181,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-5982922183815617525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4722470882680244495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d15708c7be6ff9f4dbe6eaac0099029b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

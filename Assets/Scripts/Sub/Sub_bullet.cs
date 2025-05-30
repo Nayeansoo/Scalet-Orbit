@@ -10,12 +10,6 @@ public class Sub_bullet : MonoBehaviour
         Invoke("DestoryBullet", 1f);
 
     }
-
-    void Update()
-    {
-        transform.Translate(Vector2.up * speed * Time.deltaTime);
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Enemy"))

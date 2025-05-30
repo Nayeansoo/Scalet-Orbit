@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +6,6 @@ public class Enemy : MonoBehaviour
 {
     public float EnemyHP;
     [SerializeField] private GameObject itemPrefab;
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         if(EnemyHP <= 0)
@@ -31,9 +26,12 @@ public class Enemy : MonoBehaviour
         {
             DestroyEnemy();
         }
+
+        if (other.CompareTag("subBullet"))
+        {
+            EnemyHP -= 0.05f;
+        }
     }
-
-
 
     void DropItem()
     {
@@ -45,7 +43,7 @@ public class Enemy : MonoBehaviour
 
     void DestroyEnemy()
     {
-        Debug.Log("�� óġ");
+        Debug.Log("적 처치");
         Destroy(gameObject);
     }
 }
