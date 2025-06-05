@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -17,7 +17,7 @@ public class SettingsPanel : MonoBehaviour
 
     public void ShowPanel()
     {
-        panel.DOAnchorPos(Vector2.zero, 1.0f).SetEase(Ease.OutBounce);
+        panel.DOAnchorPos(Vector2.zero, 1.0f).SetEase(Ease.OutQuint);
     }
 
     public void ClosePanel()

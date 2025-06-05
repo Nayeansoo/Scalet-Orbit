@@ -7,6 +7,7 @@ public class GameSystem : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject bulletPrefab1;
     public GameObject Boss1;
+    private GameObject boss1Instance;
 
     private GameObject SpawnEnemy(Vector3 position)
     {
@@ -15,29 +16,30 @@ public class GameSystem : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(TestPatternUpdate());
+        StartCoroutine(EnemyPatternUpdate());
     }
 
-    IEnumerator TestPatternUpdate()
+    IEnumerator EnemyPatternUpdate()
     {
-        yield return new WaitForSeconds(2f);
-        yield return StartCoroutine(Pattern0());
-        yield return new WaitForSeconds(3.5f);
-        yield return StartCoroutine(Pattern1());
-        yield return new WaitForSeconds(5f);
-        yield return StartCoroutine(Pattern2());
-        yield return StartCoroutine(Pattern3());
-        yield return new WaitForSeconds(5.5f);
-        yield return StartCoroutine(Pattern4());
-        yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(Pattern5());
-        yield return StartCoroutine(Pattern6());
-        yield return new WaitForSeconds(2f);
-        yield return StartCoroutine(Pattern7());
-        yield return new WaitForSeconds(2.5f);
-        yield return StartCoroutine(Pattern8());
-        yield return new WaitForSeconds(1.5f);
+        //yield return new WaitForSeconds(2f);
+        //yield return StartCoroutine(Pattern0());
+        //yield return new WaitForSeconds(3.5f);
+        //yield return StartCoroutine(Pattern1());
+        //yield return new WaitForSeconds(5f);
+        //yield return StartCoroutine(Pattern2());
+        //yield return StartCoroutine(Pattern3());
+        //yield return new WaitForSeconds(5.5f);
+        //yield return StartCoroutine(Pattern4());
+        //yield return new WaitForSeconds(1f);
+        //yield return StartCoroutine(Pattern5());
+        //yield return StartCoroutine(Pattern6());
+        //yield return new WaitForSeconds(2f);
+        //yield return StartCoroutine(Pattern7());
+        //yield return new WaitForSeconds(2.5f);
+        //yield return StartCoroutine(Pattern8());
+        //yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(Patternover());
+        boss1Instance = Instantiate(Boss1, new Vector3(-3.53f, 7f, 0), Quaternion.identity);
     }
 
     IEnumerator HomingAfterDelay(GameObject bullet, float delay, float speed)

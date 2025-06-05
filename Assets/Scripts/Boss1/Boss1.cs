@@ -5,10 +5,17 @@ using UnityEngine;
 public class Boss1 : MonoBehaviour
 {
     public float Boss1HP;
+
+    void Awake()
+    {
+        gameObject.SetActive(true);
+    }
+
     void Start()
     {
-        Boss1HP = 10000f;
+        Boss1HP = 10000;
     }
+
 
     void Update()
     {
