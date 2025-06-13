@@ -21,21 +21,21 @@ public class GameSystem : MonoBehaviour
 
     IEnumerator EnemyPatternUpdate()
     {
-        yield return new WaitForSeconds(2f);
-        yield return StartCoroutine(Pattern0());
-        yield return new WaitForSeconds(3.5f);
-        yield return StartCoroutine(Pattern1());
-        yield return new WaitForSeconds(5f);
-        yield return StartCoroutine(Pattern2());
-        yield return StartCoroutine(Pattern3());
-        yield return new WaitForSeconds(5.5f);
-        yield return StartCoroutine(Pattern4());
-        yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(Pattern5());
-        yield return StartCoroutine(Pattern6());
-        yield return new WaitForSeconds(2f);
-        yield return StartCoroutine(Pattern7());
-        yield return new WaitForSeconds(2.5f);
+        //yield return new WaitForSeconds(2f);
+        //yield return StartCoroutine(Pattern0());
+        //yield return new WaitForSeconds(3.5f);
+        //yield return StartCoroutine(Pattern1());
+        //yield return new WaitForSeconds(5f);
+        //yield return StartCoroutine(Pattern2());
+        //yield return StartCoroutine(Pattern3());
+        //yield return new WaitForSeconds(5.5f);
+        //yield return StartCoroutine(Pattern4());
+        //yield return new WaitForSeconds(1f);
+        //yield return StartCoroutine(Pattern5());
+        //yield return StartCoroutine(Pattern6());
+        //yield return new WaitForSeconds(2f);
+        //yield return StartCoroutine(Pattern7());
+        //yield return new WaitForSeconds(2.5f);
         yield return StartCoroutine(Patternover());
         boss1Instance = Instantiate(Boss1, new Vector3(-3.53f, 7f, 0), Quaternion.identity);
     }
@@ -97,7 +97,7 @@ public class GameSystem : MonoBehaviour
 
         while (enemy != null)
         {
-            int count = 40;
+            int count = 36;
             float angleStep = count * 15f / count;
 
             for (int i = 0; i < count; i++)
@@ -132,7 +132,7 @@ public class GameSystem : MonoBehaviour
 
         while (enemy != null)
         {
-            int count = 25;
+            int count = 22;
             float angleStep = 360f / count;
 
             for (int i = 0; i < count; i++)
@@ -171,7 +171,7 @@ public class GameSystem : MonoBehaviour
 
         while (enemy != null && elapsed < duration)
         {
-            int count = 6;
+            int count = 4;
             float spacing = 1f;
 
             for (int i = 0; i < count; i++)
@@ -211,8 +211,8 @@ public class GameSystem : MonoBehaviour
 
         while (enemy != null)
         {
-            int count = 25;
-            float angleStep = 360f / count;
+            int count = 22;
+            float angleStep = 360f/ count;
 
             for (int i = 0; i < count; i++)
             {
@@ -444,7 +444,7 @@ public class GameSystem : MonoBehaviour
     }
     void FireBulletCircle(Vector3 position)
     {
-        int count = 10;
+        int count = 8;
         float angleStep = 360f / count;
 
         for (int i = 0; i < count; i++)
@@ -461,7 +461,7 @@ public class GameSystem : MonoBehaviour
     {
         if (enemy == null) yield break;
 
-        int count = 18;
+        int count = 15;
         float baseAngle = 0f;
 
         for (int i = 0; i < 3; i++)
