@@ -12,6 +12,8 @@ TagManager:
   - canvas
   - sub
   - subBullet
+  - Enemy2
+  - Enemy3
   layers:
   - Default
   - TransparentFX

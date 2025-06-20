@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     public GameObject bullet;
-    public GameObject BigGun;
     public GameObject Player;
     public Transform pos;
     public float cooltime;
@@ -66,7 +65,7 @@ public class PlayerAttack : MonoBehaviour
                 if (Input.GetKey(KeyCode.X))
                 {
                     Debug.Log("필살기 사용");
-                    Instantiate(BigGun, pos.position, transform.rotation);
+                    //여기에 적의 총알을 다 없애는 필살기 만들기
                     Icount.ItemCount -= 1;
                 }
                 Bigcurtime = Bigcooltime;

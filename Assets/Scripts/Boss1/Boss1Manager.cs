@@ -10,6 +10,8 @@ public class Boss1Manager : MonoBehaviour
     public GameObject bulletPrefab3;
     public GameObject bulletPrefab4;
     public GameObject bulletPrefab5;
+    public GameObject enemyPrefab2;
+    public GameObject enemyPrefab3;
 
     private bool hasStarted = false;
     private Boss1 boss1;
@@ -41,7 +43,7 @@ public class Boss1Manager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         yield return StartCoroutine(Boss_1Pattern4());
         yield return new WaitForSeconds(1f);
-    }
+    }  //잡몹 패턴을 적을때 처럼 여기에도 똑같이 패턴을 추가하면 넣어주기만 하면 됨
 
     IEnumerator Boss_1Pattern0()
     {
@@ -57,7 +59,7 @@ public class Boss1Manager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         yield return StartCoroutine(Pattern0());
-    }
+    }  //보스를 기준으로 360도로 무작위 위치에 탄환을 날림
     IEnumerator Pattern0()
     {
         int count = 450; // 탄 수 증가
@@ -128,7 +130,7 @@ public class Boss1Manager : MonoBehaviour
         }
 
         yield return null;
-    }
+    }  //보스가 왼쪽으로 이동후 4개에 탄환을 소환후 그 탄환이 터지며 원형으로 날아감 
     IEnumerator Pattern1(GameObject bullet)
     {
         int count = 30;
@@ -197,7 +199,7 @@ public class Boss1Manager : MonoBehaviour
         }
 
         yield return null;
-    }
+    }  //1번 패턴과 같으나 보스가 오른쪽으로 이동해 탄환을 날림
     IEnumerator Pattern2(GameObject bullet)
     {
         int count = 30;
@@ -231,7 +233,7 @@ public class Boss1Manager : MonoBehaviour
 
         StartCoroutine(RadialWaveBullets(25, 0.8f, 10f));
         // 탄 수, 간격, 총 지속 시간
-    }
+    }  //보스가 위로 올라가 원형 탄환 2번 발사 후 바닥으로 돌진하며 수많은 탄환을 날림
     IEnumerator RadialWaveBullets(int bulletCount, float interval, float duration)
     {
         float elapsed = 0f;
@@ -318,7 +320,7 @@ public class Boss1Manager : MonoBehaviour
         }
         transform.position = startPos;
         yield return new WaitForSeconds(0.5f);
-    }
+    } //보스가 위에서 옆으로 왔다갔다 하는 원형탄환을 이어서 발사함
     void FireBurst(Vector3 center, int count, float baseSpeed)
     {
         float angleStep = 360f / count;

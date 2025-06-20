@@ -16,6 +16,15 @@ public class Bullet : MonoBehaviour
         {
             DestoryBullet();
         }
+
+        if (other.CompareTag("Enemy2"))
+        {
+            DestoryBullet();
+        }
+
+        if (other.CompareTag("Enemy3")){
+            DestoryBullet();
+        }
     }
 
     void DestoryBullet()

@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 7650275092990600295}
   - component: {fileID: 6344747174752478939}
   - component: {fileID: 1419451945040089301}
-  - component: {fileID: -1334307652209189738}
+  - component: {fileID: -1014690453592476300}
   - component: {fileID: 3551643869537588539}
-  m_Layer: 10
-  m_Name: Enemy
-  m_TagString: Enemy
+  m_Layer: 0
+  m_Name: Enemy3
+  m_TagString: Enemy3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -132,7 +132,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.81644154, y: 0.37142658}
   m_EdgeRadius: 0
---- !u!114 &-1334307652209189738
+--- !u!114 &-1014690453592476300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 728085874322148703}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac18f3919e90b62448ea93860777c757, type: 3}
+  m_Script: {fileID: 11500000, guid: 174dba72030289546be85942d122afab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyHP: 5
@@ -156,7 +156,7 @@ Animator:
   m_GameObject: {fileID: 728085874322148703}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e0d8af48f195361458b7a6516fd8b788, type: 2}
+  m_Controller: {fileID: 9100000, guid: 1edbc1df0db117646b73b45477d422c6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

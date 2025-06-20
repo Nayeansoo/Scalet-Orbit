@@ -29,17 +29,12 @@ public class Boss1 : MonoBehaviour
     {
         if (other.CompareTag("Bullet"))
         {
-            Boss1HP -= 1f;
-        }
-
-        if (other.CompareTag("BigBullet"))
-        {
-            Boss1HP -= 300f;
+            Boss1HP -= 2f;
         }
 
         if (other.CompareTag("subBullet"))
         {
-            Boss1HP -= 0.05f;
+            Boss1HP -= 0.5f;
         }
     }
 

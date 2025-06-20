@@ -2,13 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy1 : MonoBehaviour
 {
     public float EnemyHP;
     [SerializeField] private GameObject itemPrefab;
+    public GameObject laser;
+    public GameObject effect;
+
+    void Start()
+    {
+        effect.SetActive(false);
+        StartCoroutine(Laser());
+    }
+
+    IEnumerator Laser()
+    {
+        yield return new WaitForSeconds(2f);
+        effect.SetActive(true);
+    }
+
     void Update()
     {
-        if(EnemyHP <= 0)
+        if (EnemyHP <= 0)
         {
             DropItem();
             DestroyEnemy();
@@ -20,11 +35,6 @@ public class Enemy : MonoBehaviour
         if (other.CompareTag("Bullet"))
         {
             EnemyHP -= 1f;
-        }
-
-        if (other.CompareTag("BigBullet"))
-        {
-            DestroyEnemy();
         }
 
         if (other.CompareTag("subBullet"))

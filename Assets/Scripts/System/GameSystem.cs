@@ -38,7 +38,7 @@ public class GameSystem : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
         yield return StartCoroutine(Patternover());
         boss1Instance = Instantiate(Boss1, new Vector3(-3.53f, 7f, 0), Quaternion.identity);
-    }
+    }  //적의 패턴을 호출하는 곳 패턴을 추가 하면 여기 밑에 넣어야 나옴
 
     IEnumerator HomingAfterDelay(GameObject bullet, float delay, float speed)
     {
@@ -72,7 +72,7 @@ public class GameSystem : MonoBehaviour
         StartCoroutine(MoveEnemy0(enemy2, Vector3.down, 2f, 2f));
         StartCoroutine(MoveEnemy0(enemy2, Vector3.up, 2f, 2f, 2f));
         StartCoroutine(BulletPattern0(enemy2, 0.5f));
-    }
+    } //적이 가운데, 왼쪽, 오른쪽 순으로 원형 탄 발사하면서 내려옴
     IEnumerator MoveEnemy0(GameObject enemy, Vector3 direction, float duration, float speed, float delay = 0f)
     {
         if (delay > 0f)
@@ -124,7 +124,7 @@ public class GameSystem : MonoBehaviour
         StartCoroutine(BulletPattern1(enemy, 0.3f));
 
         yield return null;
-    }
+    } //적이 왼쪽에서 360도 방향으로 여러줄로 
     IEnumerator BulletPattern1(GameObject enemy, float fireInterval)
     {
         float baseAngle = 0f;
@@ -163,7 +163,7 @@ public class GameSystem : MonoBehaviour
 
         if (enemy != null)
             Destroy(enemy);
-    }
+    } //적이 가운데에서 내려오면서 물결모양 패턴
     IEnumerator BulletPattern2(GameObject enemy, float fireInterval, float duration)
     {
         float time = 0f;
@@ -203,7 +203,7 @@ public class GameSystem : MonoBehaviour
         StartCoroutine(BulletPattern3(enemy, 0.3f));
 
         yield return null;
-    }
+    } //적이 오른쪽에서 360도 방향으로 여러줄로 1번 배턴하고 같고 위치만 다른 패턴
     IEnumerator BulletPattern3(GameObject enemy, float fireInterval)
     {
         float baseAngle = 0f;
@@ -254,7 +254,7 @@ public class GameSystem : MonoBehaviour
         }
 
         yield return new WaitForSeconds(7f);
-    }
+    } //적이 오른쪽에서 부터 3마리가 순서대로 내려오며 플레이어를 따라가는 총알 발사 
     IEnumerator BulletPattern4(GameObject enemy, float fireInterval)
     {
         while (enemy != null)
@@ -300,7 +300,7 @@ public class GameSystem : MonoBehaviour
         }
 
         yield return new WaitForSeconds(7f);
-    }
+    } //4번패턴과 같지만 왼쪽에서 내려옴
     IEnumerator BulletPattern5(GameObject enemy, float fireInterval)
     {
         while (enemy != null)
@@ -332,7 +332,7 @@ public class GameSystem : MonoBehaviour
         StartCoroutine(BulletPattern6(enemy, 1f));
 
         yield return new WaitForSeconds(6f);
-    }
+    }  //적에서 원형으로 총알이 많이 나옴 진짜 많이 나옴
     IEnumerator BulletPattern6(GameObject enemy, float fireInterval)
     {
         while (enemy != null)
@@ -395,7 +395,7 @@ public class GameSystem : MonoBehaviour
         }
 
         yield return new WaitForSeconds(6f);
-    }
+    }   //적이 왼쪽에서 나오며 원형으로 뿌리고 이동하다가 정해진 위치에서 원형으로 다시 탄 날리기
     IEnumerator CurveInOutMove7(GameObject enemy, float duration)
     {
         float elapsed = 0f;
@@ -485,7 +485,7 @@ public class GameSystem : MonoBehaviour
         }
     }
 
-    IEnumerator Patternover()
+    IEnumerator Patternover() //모든 패턴이 끝난뒤 카메라 흔듬 모션과 함께 보스 켜주기
     {
         SomeEventOrFunction();
         yield return null;
