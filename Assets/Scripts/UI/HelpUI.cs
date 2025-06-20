@@ -11,7 +11,9 @@ public class HelpUI : MonoBehaviour
 
     void Start()
     {
-        
+        help_1.SetActive(true);
+        help_2.SetActive(false);
+        help_3.SetActive(false);
     }
 
     void Update()
