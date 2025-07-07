@@ -34,7 +34,7 @@ public class Boss1Manager : MonoBehaviour
     {
         transform.position = new Vector3(-3.53f, 2.5f, 0);
         StartCoroutine(Boss_1Pattern0());
-        yield return new WaitForSeconds(7.5f);
+        yield return new WaitForSeconds(8f);
         StartCoroutine(Boss_1Pattern1());
         yield return new WaitForSeconds(4.5f);
         StartCoroutine(Boss_1Pattern2());

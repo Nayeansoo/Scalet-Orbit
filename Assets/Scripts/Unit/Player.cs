@@ -100,6 +100,13 @@ public class Player : MonoBehaviour
             hp -= 1;
             StartCoroutine(HitCooldown());
         }
+
+        if (other.CompareTag("EnemyLaser") && !isInvincible)
+        {
+            Debug.Log("레이저 피격");
+            hp -= 1;
+            StartCoroutine(HitCooldown());
+        }
     }
 
     IEnumerator HitCooldown()
