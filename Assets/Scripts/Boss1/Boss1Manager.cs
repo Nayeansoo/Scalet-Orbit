@@ -33,16 +33,17 @@ public class Boss1Manager : MonoBehaviour
     IEnumerator EnemyPatternUpdate()
     {
         transform.position = new Vector3(-3.53f, 2.5f, 0);
-        StartCoroutine(Boss_1Pattern0());
-        yield return new WaitForSeconds(8f);
-        StartCoroutine(Boss_1Pattern1());
-        yield return new WaitForSeconds(4.5f);
-        StartCoroutine(Boss_1Pattern2());
-        yield return new WaitForSeconds(4.5f);
-        StartCoroutine(Boss_1Pattern3());
+        //StartCoroutine(Boss_1Pattern0());
+        //yield return new WaitForSeconds(8f);
+        //StartCoroutine(Boss_1Pattern1());
+        //yield return new WaitForSeconds(4.5f);
+        //StartCoroutine(Boss_1Pattern2());
+        //yield return new WaitForSeconds(4.5f);
+        //StartCoroutine(Boss_1Pattern3());
+        //yield return new WaitForSeconds(1f);
+        //yield return StartCoroutine(Boss_1Pattern4());
         yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(Boss_1Pattern4());
-        yield return new WaitForSeconds(1f);
+        StartCoroutine(Boss_1Pattern5());
     }  //잡몹 패턴을 적을때 처럼 여기에도 똑같이 패턴을 추가하면 넣어주기만 하면 됨
 
     IEnumerator Boss_1Pattern0()
@@ -341,5 +342,90 @@ public class Boss1Manager : MonoBehaviour
                 rb.velocity = dir * speed;
             }
         }
+    }
+
+    IEnumerator Boss_1Pattern5()
+    {
+        // 1. enemyPrefab2 두 마리 소환 (왼쪽/오른쪽)
+        GameObject leftEnemy = Instantiate(enemyPrefab2, new Vector3(-6f, 3.5f, 0), Quaternion.identity);
+        GameObject rightEnemy = Instantiate(enemyPrefab2, new Vector3(-1f, 3.5f, 0), Quaternion.identity);
+
+        // 2. 아래로 이동
+        Vector3 leftTarget = new Vector3(-6f, 1.5f, 0);
+        Vector3 rightTarget = new Vector3(-1f, 1.5f, 0);
+
+        float moveSpeed = 2f;
+        while (Vector3.Distance(leftEnemy.transform.position, leftTarget) > 0.05f ||
+               Vector3.Distance(rightEnemy.transform.position, rightTarget) > 0.05f)
+        {
+            if (leftEnemy != null)
+                leftEnemy.transform.position = Vector3.MoveTowards(leftEnemy.transform.position, leftTarget, moveSpeed * Time.deltaTime);
+            if (rightEnemy != null)
+                rightEnemy.transform.position = Vector3.MoveTowards(rightEnemy.transform.position, rightTarget, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        // 3. Enemy2 레이저 공격 시작
+        if (leftEnemy != null)
+            StartCoroutine(leftEnemy.GetComponent<Enemy1>().enemy2Attack());
+        if (rightEnemy != null)
+            StartCoroutine(rightEnemy.GetComponent<Enemy1>().enemy2Attack());
+
+        // 4. 보스 와리가리 탄막 실행 (20초간)
+        float duration = 20f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            FireWavyBullet(transform.position);
+            yield return new WaitForSeconds(0.2f); // 발사 간격
+            elapsed += 0.2f;
+        }
+
+        // 5. 위로 퇴장
+        Vector3 leftExit = new Vector3(-6f, 6f, 0);
+        Vector3 rightExit = new Vector3(-1f, 6f, 0);
+
+        while ((leftEnemy != null && Vector3.Distance(leftEnemy.transform.position, leftExit) > 0.05f) ||
+               (rightEnemy != null && Vector3.Distance(rightEnemy.transform.position, rightExit) > 0.05f))
+        {
+            if (leftEnemy != null)
+                leftEnemy.transform.position = Vector3.MoveTowards(leftEnemy.transform.position, leftExit, moveSpeed * Time.deltaTime);
+            if (rightEnemy != null)
+                rightEnemy.transform.position = Vector3.MoveTowards(rightEnemy.transform.position, rightExit, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        if (leftEnemy != null) Destroy(leftEnemy);
+        if (rightEnemy != null) Destroy(rightEnemy);
+    }
+
+    // =========================
+    // 와리가리 탄막 함수
+    // =========================
+    void FireWavyBullet(Vector3 startPos)
+    {
+        GameObject bullet = Instantiate(bulletPrefab2, startPos, Quaternion.identity);
+        StartCoroutine(WavyMove(bullet));
+    }
+
+    IEnumerator WavyMove(GameObject bullet)
+    {
+        float speed = 2f;         // 내려가는 속도
+        float amplitude = 1.5f;   // 좌우 흔들림 크기
+        float frequency = 3f;     // 흔들림 속도
+        float elapsed = 0f;
+
+        Vector3 startPos = bullet.transform.position;
+
+        while (bullet != null && bullet.transform.position.y > -6f)
+        {
+            elapsed += Time.deltaTime;
+            float xOffset = Mathf.Sin(elapsed * frequency) * amplitude;
+            bullet.transform.position += new Vector3(xOffset * Time.deltaTime, -speed * Time.deltaTime, 0);
+            yield return null;
+        }
+
+        if (bullet != null) Destroy(bullet);
     }
 }

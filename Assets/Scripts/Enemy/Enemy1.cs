@@ -1,95 +1,88 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy1 : MonoBehaviour
 {
     public float EnemyHP;
-    [SerializeField] private GameObject itemPrefab;
-    public GameObject laser;
-    public GameObject effect;
-    public GameObject effectSignal;
+    public GameObject itemPrefab;
+
+    public GameObject laser;        // 자식 laser 오브젝트 연결
+    public GameObject effect;       // 바닥 효과
+    public GameObject effectSignal; // 경고 사인
+
+    private Animator laserAnim;
 
     void Start()
     {
-        effectSignal.SetActive(false);
-        effect.SetActive(false);
-        StartCoroutine(LaserEffect());
+        if (laser != null)
+        {
+            laser.SetActive(false); // 시작할 때 꺼두기
+            laserAnim = laser.GetComponent<Animator>();
+        }
+
+        if (effect != null) effect.SetActive(false);
+        if (effectSignal != null) effectSignal.SetActive(false);
     }
 
-    IEnumerator LaserEffect()
+    public IEnumerator enemy2Attack()
     {
-        yield return new WaitForSeconds(2f);
-        effect.SetActive(true);
-        StartCoroutine(Cooldown());
-        yield return new WaitForSeconds(0.5f);
-        effectSignal.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-        StartCoroutine (Laser());
-        yield return new WaitForSeconds(3.5f);
+        // 경고 & 바닥 이펙트
+        if (effect != null) effect.SetActive(true);
+        if (effectSignal != null) effectSignal.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        // 레이저 발사
+        yield return StartCoroutine(Laser());
+
+        // 종료 후 이펙트 끄기
+        if (effect != null) effect.SetActive(false);
+        if (effectSignal != null) effectSignal.SetActive(false);
     }
 
     IEnumerator Laser()
     {
-        effectSignal.SetActive(false);
-        yield return new WaitForSeconds(1f);
         laser.SetActive(true);
-    }
+        Animator anim = laser.GetComponent<Animator>();
 
-    IEnumerator Cooldown()
-    {
-        SpriteRenderer sr = effect.GetComponent<SpriteRenderer>();
-
-        if (sr == null) yield break;
-
-        float blinkInterval = 0.1f;
-        float timer = 0f;
-
-        while (timer < 0.3f)
+        if (anim != null)
         {
-            sr.color = new Color(1f, 1f, 1f, 0.3f);
-            yield return new WaitForSeconds(blinkInterval);
+            anim.Play("Enemy2_Attack", -1, 0f);
+            Debug.Log("레이저 애니메이션 실행!");
 
-            sr.color = new Color(1f, 1f, 1f, 1f);
-            yield return new WaitForSeconds(blinkInterval);
-
-            timer += blinkInterval * 2f;
+            // 그냥 20초 동안 유지
+            yield return new WaitForSeconds(20f);
         }
+        else
+        {
+            Debug.LogWarning("Animator 없음!");
+            yield return new WaitForSeconds(100f); // Animator 없어도 강제로 20초
+        }
+
+        laser.SetActive(false);
     }
+
+
+
 
     void Update()
     {
         if (EnemyHP <= 0)
         {
             DropItem();
-            DestroyEnemy();
+            Destroy(gameObject);
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Bullet"))
-        {
-            EnemyHP -= 1f;
-        }
-
-        if (other.CompareTag("subBullet"))
-        {
-            EnemyHP -= 0.05f;
-        }
+        if (other.CompareTag("Bullet")) EnemyHP -= 1f;
+        if (other.CompareTag("subBullet")) EnemyHP -= 0.05f;
     }
 
     void DropItem()
     {
         if (itemPrefab != null)
-        {
             Instantiate(itemPrefab, transform.position, Quaternion.identity);
-        }
-    }
-
-    void DestroyEnemy()
-    {
-        Debug.Log("적 처치");
-        Destroy(gameObject);
     }
 }

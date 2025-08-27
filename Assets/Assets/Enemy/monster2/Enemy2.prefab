@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyHP: 10
   itemPrefab: {fileID: 4168124773272059267, guid: 9a73e9c9eb9a1af4eb861658a195d6ff, type: 3}
-  laser: {fileID: 5467977478390306860, guid: 0470944258ef5b045b23c83409191c76, type: 3}
+  laser: {fileID: 3037569105711409358}
   effect: {fileID: 2798731928697299154}
   effectSignal: {fileID: 8488623754748239943}
 --- !u!95 &3551643869537588539
@@ -402,6 +402,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0470944258ef5b045b23c83409191c76, type: 3}
+--- !u!1 &3037569105711409358 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5467977478390306860, guid: 0470944258ef5b045b23c83409191c76, type: 3}
+  m_PrefabInstance: {fileID: 7045236795359588578}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8129123515033436915 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1231109209252999697, guid: 0470944258ef5b045b23c83409191c76, type: 3}
