@@ -33,15 +33,15 @@ public class Boss1Manager : MonoBehaviour
     IEnumerator EnemyPatternUpdate()
     {
         transform.position = new Vector3(-3.53f, 2.5f, 0);
-        //StartCoroutine(Boss_1Pattern0());
-        //yield return new WaitForSeconds(8f);
-        //StartCoroutine(Boss_1Pattern1());
-        //yield return new WaitForSeconds(4.5f);
-        //StartCoroutine(Boss_1Pattern2());
-        //yield return new WaitForSeconds(4.5f);
-        //StartCoroutine(Boss_1Pattern3());
-        //yield return new WaitForSeconds(1f);
-        //yield return StartCoroutine(Boss_1Pattern4());
+        StartCoroutine(Boss_1Pattern0());
+        yield return new WaitForSeconds(8f);
+        StartCoroutine(Boss_1Pattern1());
+        yield return new WaitForSeconds(4.5f);
+        StartCoroutine(Boss_1Pattern2());
+        yield return new WaitForSeconds(4.5f);
+        StartCoroutine(Boss_1Pattern3());
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(Boss_1Pattern4());
         yield return new WaitForSeconds(1f);
         StartCoroutine(Boss_1Pattern5());
     }  //잡몹 패턴을 적을때 처럼 여기에도 똑같이 패턴을 추가하면 넣어주기만 하면 됨
