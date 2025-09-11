@@ -253,7 +253,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 7949091141244324689, guid: d9be4b2eca7369c4d912a3712ecc426f, type: 3}
-  BigGun: {fileID: 2788944104275768345, guid: 520b6595861d87e4783ad578e81e5d40, type: 3}
   Player: {fileID: 2370402005568188743}
   pos: {fileID: 4916617028109025882}
   cooltime: 0.05
