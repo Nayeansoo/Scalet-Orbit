@@ -41,6 +41,12 @@ public class Boss1 : MonoBehaviour
     void DestroyBoss1()
     {
         Debug.Log("보스 처치");
+
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.GameClear();
+        }
+
         Destroy(gameObject);
     }
 }

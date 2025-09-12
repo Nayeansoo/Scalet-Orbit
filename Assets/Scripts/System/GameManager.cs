@@ -8,12 +8,17 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerPrefab;
     public GameObject HP1Prefab, HP2Prefab, HP3Prefab, HP4Prefab, HP5Prefab, HP6Prefab;
-    public GameObject GameOverCanvas;
+
+    public GameObject GameOverCanvas;   // GameOver 전용 Canvas
+    public GameObject GameClearCanvas;  // GameClear 전용 Canvas
+
     [SerializeField] private GameObject subSystemPrefab;
 
     private Player player;
     private GameObject[] hpIcons = new GameObject[6];
     private GameObject subSystemInstance;
+
+    private bool isGameEnded = false; // ✅ GameOver/GameClear 중복 실행 방지
 
     void Awake()
     {
@@ -51,9 +56,13 @@ public class GameManager : MonoBehaviour
     {
         yield return null;
 
-        GameOverCanvas = GameObject.Find("Canvas");
         if (GameOverCanvas != null)
             GameOverCanvas.SetActive(false);
+
+        if (GameClearCanvas != null)
+            GameClearCanvas.SetActive(false);
+
+        isGameEnded = false; // 씬 로드될 때마다 초기화
 
         if (player == null)
             SpawnPlayer();
@@ -75,6 +84,7 @@ public class GameManager : MonoBehaviour
         subSystemInstance = Instantiate(subSystemPrefab);
     }
 
+    // 🔄 현재 씬 재시작 (Game Over용)
     public void RestartScene()
     {
         StartCoroutine(RestartRoutine());
@@ -94,12 +104,33 @@ public class GameManager : MonoBehaviour
             subSystemInstance = null;
         }
 
-        // 조금 대기해서 모든 객체 완전히 제거
         yield return new WaitForSeconds(0.1f);
-
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("SampleScene"); // 현재 스테이지 이름
     }
 
+    // 🟩 MainMenu로 이동 (Game Clear용)
+    public void LoadNextStage()
+    {
+        StartCoroutine(LoadNextStageRoutine());
+    }
+
+    IEnumerator LoadNextStageRoutine()
+    {
+        if (player != null)
+        {
+            Destroy(player.gameObject);
+            player = null;
+        }
+
+        if (subSystemInstance != null)
+        {
+            Destroy(subSystemInstance);
+            subSystemInstance = null;
+        }
+
+        yield return new WaitForSeconds(0.1f);
+        SceneManager.LoadScene("MainMenu");
+    }
 
     IEnumerator SpawnHPIcons()
     {
@@ -139,21 +170,37 @@ public class GameManager : MonoBehaviour
             SpawnSubSystem();
     }
 
+    // 🟥 GameOver 실행
     public void GameOver()
     {
-        if (GameOverCanvas == null)
-        {
-            GameOverCanvas = GameObject.Find("Canvas");
-            if (GameOverCanvas == null) return;
-        }
+        if (isGameEnded) return;
+        isGameEnded = true;
 
-        GameOverCanvas.SetActive(true);
+        if (GameOverCanvas != null)
+            GameOverCanvas.SetActive(true);
 
         var gameOverScript = GameOverCanvas.GetComponentInChildren<GameOver>();
         if (gameOverScript != null)
         {
             gameOverScript.StartCoroutine("GameOverText");
             gameOverScript.StartCoroutine("RetryText");
+        }
+    }
+
+    // 🟩 GameClear 실행
+    public void GameClear()
+    {
+        if (isGameEnded) return;
+        isGameEnded = true;
+
+        if (GameClearCanvas != null)
+            GameClearCanvas.SetActive(true);
+
+        var gameClearScript = GameClearCanvas.GetComponentInChildren<GameClear>();
+        if (gameClearScript != null)
+        {
+            gameClearScript.StartCoroutine("ClearTextAnim");
+            gameClearScript.StartCoroutine("NextButtonAnim");
         }
     }
 

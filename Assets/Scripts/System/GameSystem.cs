@@ -21,21 +21,21 @@ public class GameSystem : MonoBehaviour
 
     IEnumerator EnemyPatternUpdate()
     {
-        yield return new WaitForSeconds(2f);
-        yield return StartCoroutine(Pattern0());
-        yield return new WaitForSeconds(3.5f);
-        yield return StartCoroutine(Pattern1());
-        yield return new WaitForSeconds(5f);
-        yield return StartCoroutine(Pattern2());
-        yield return StartCoroutine(Pattern3());
-        yield return new WaitForSeconds(5.5f);
-        yield return StartCoroutine(Pattern4());
-        yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(Pattern5());
-        yield return StartCoroutine(Pattern6());
-        yield return new WaitForSeconds(2f);
-        yield return StartCoroutine(Pattern7());
-        yield return new WaitForSeconds(2.5f);
+        //yield return new WaitForSeconds(2f);
+        //yield return StartCoroutine(Pattern0());
+        //yield return new WaitForSeconds(3.5f);
+        //yield return StartCoroutine(Pattern1());
+        //yield return new WaitForSeconds(5f);
+        //yield return StartCoroutine(Pattern2());
+        //yield return StartCoroutine(Pattern3());
+        //yield return new WaitForSeconds(5.5f);
+        //yield return StartCoroutine(Pattern4());
+        //yield return new WaitForSeconds(1f);
+        //yield return StartCoroutine(Pattern5());
+        //yield return StartCoroutine(Pattern6());
+        //yield return new WaitForSeconds(2f);
+        //yield return StartCoroutine(Pattern7());
+        //yield return new WaitForSeconds(2.5f);
         yield return StartCoroutine(Patternover());
         boss1Instance = Instantiate(Boss1, new Vector3(-3.53f, 7f, 0), Quaternion.identity);
     }  //적의 패턴을 호출하는 곳 패턴을 추가 하면 여기 밑에 넣어야 나옴
