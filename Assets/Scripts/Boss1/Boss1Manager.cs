@@ -72,7 +72,7 @@ public class Boss1Manager : MonoBehaviour
 
             Vector3 dir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
 
-            GameObject bullet = Instantiate(bulletPrefab2, transform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletPrefab4, transform.position, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)
                 rb.velocity = dir * speed;
@@ -110,7 +110,7 @@ public class Boss1Manager : MonoBehaviour
             float yOffset = (i - bulletCount / 2f) * spacing;
             Vector3 spawnPos = transform.position + new Vector3(1.2f, yOffset, 0); // ← X 방향으로 앞으로 뺌 (보스 기준 오른쪽)
 
-            GameObject bullet = Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletPrefab1, spawnPos, Quaternion.identity);
             storedBullets.Add(bullet);
 
             yield return new WaitForSeconds(0.2f);
@@ -143,7 +143,7 @@ public class Boss1Manager : MonoBehaviour
             float rad = Mathf.Deg2Rad * angle;
             Vector3 dir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
 
-            GameObject newBullet = Instantiate(bulletPrefab2, bullet.transform.position, Quaternion.identity);
+            GameObject newBullet = Instantiate(bulletPrefab3, bullet.transform.position, Quaternion.identity);
             newBullet.GetComponent<Rigidbody2D>().velocity = dir * 3f;
         }
 
@@ -179,7 +179,7 @@ public class Boss1Manager : MonoBehaviour
             float yOffset = (i - bulletCount / 2f) * spacing;
             Vector3 spawnPos = transform.position + new Vector3(-1.2f, yOffset, 0); // ← X 방향으로 앞으로 뺌 (보스 기준 오른쪽)
 
-            GameObject bullet = Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletPrefab1, spawnPos, Quaternion.identity);
             storedBullets.Add(bullet);
 
             yield return new WaitForSeconds(0.2f);

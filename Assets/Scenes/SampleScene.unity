@@ -2624,9 +2624,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1381657270}
-          m_TargetAssemblyTypeName: GameOver, Assembly-CSharp
-          m_MethodName: OnClickRestart
+        - m_Target: {fileID: 1568991762}
+          m_TargetAssemblyTypeName: GameClear, Assembly-CSharp
+          m_MethodName: OnClickNextStage
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

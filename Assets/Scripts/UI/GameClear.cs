@@ -71,9 +71,15 @@ public class GameClear : MonoBehaviour
 
     public void OnClickNextStage()
     {
+        Debug.Log("Next Stage 버튼 클릭됨"); // 실행 확인용 로그
+
+        // DOTween 정리 → LoadNextStage() 호출 이후에 실행
+        GameManager.instance.LoadNextStage();
+
+        // 씬 이동이 시작된 뒤에 Tween 정리
         DOTween.KillAll();
-        GameManager.instance.LoadNextStage(); // GameManager에 다음 스테이지 로딩 함수 필요
     }
+
 
     IEnumerator ClearTextAnim()
     {
