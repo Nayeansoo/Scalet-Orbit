@@ -13,6 +13,8 @@ public class Boss1Manager : MonoBehaviour
     public GameObject enemyPrefab2;
     public GameObject enemyPrefab3;
 
+    public Transform firePoint;
+
     private bool hasStarted = false;
     private Boss1 boss1;
 
@@ -32,18 +34,31 @@ public class Boss1Manager : MonoBehaviour
 
     IEnumerator EnemyPatternUpdate()
     {
-        transform.position = new Vector3(-3.53f, 2.5f, 0);
-        StartCoroutine(Boss_1Pattern0());
-        yield return new WaitForSeconds(8f);
-        StartCoroutine(Boss_1Pattern1());
-        yield return new WaitForSeconds(4.5f);
-        StartCoroutine(Boss_1Pattern2());
-        yield return new WaitForSeconds(4.5f);
-        StartCoroutine(Boss_1Pattern3());
-        yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(Boss_1Pattern4());
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(Boss_1Pattern5());
+        while (boss1.Boss1HP > 0f)
+        {
+            transform.position = new Vector3(-3.53f, 2.5f, 0);
+
+            yield return StartCoroutine(Boss_1Pattern0());
+            yield return new WaitForSeconds(2.5f);
+
+            yield return StartCoroutine(Boss_1Pattern1());
+            yield return new WaitForSeconds(3.5f);
+
+            yield return StartCoroutine(Boss_1Pattern2());
+            yield return new WaitForSeconds(2.5f);
+
+            yield return StartCoroutine(Boss_1Pattern3());
+            yield return new WaitForSeconds(1f);
+
+            yield return StartCoroutine(Boss_1Pattern4());
+            yield return new WaitForSeconds(7f);
+
+            yield return StartCoroutine(Boss_1Pattern5());
+            yield return new WaitForSeconds(2f); // 한 사이클 끝난 뒤 잠깐 대기
+        }
+
+        // 여기 도착하면 보스 HP가 0이 된 것 → 패턴 종료
+        Debug.Log("보스 격파! 패턴 종료");
     }  //잡몹 패턴을 적을때 처럼 여기에도 똑같이 패턴을 추가하면 넣어주기만 하면 됨
 
     IEnumerator Boss_1Pattern0()
@@ -63,7 +78,7 @@ public class Boss1Manager : MonoBehaviour
     }  //보스를 기준으로 360도로 무작위 위치에 탄환을 날림
     IEnumerator Pattern0()
     {
-        int count = 450; // 탄 수 증가
+        int count = 500; // 탄 수 증가
         for (int i = 0; i < count; i++)
         {
             float angle = Random.Range(360f, 0f);
@@ -72,7 +87,7 @@ public class Boss1Manager : MonoBehaviour
 
             Vector3 dir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
 
-            GameObject bullet = Instantiate(bulletPrefab4, transform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletPrefab2, transform.position, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)
                 rb.velocity = dir * speed;
@@ -212,7 +227,7 @@ public class Boss1Manager : MonoBehaviour
             float rad = Mathf.Deg2Rad * angle;
             Vector3 dir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
 
-            GameObject newBullet = Instantiate(bulletPrefab2, bullet.transform.position, Quaternion.identity);
+            GameObject newBullet = Instantiate(bulletPrefab3, bullet.transform.position, Quaternion.identity);
             newBullet.GetComponent<Rigidbody2D>().velocity = dir * 3f;
         }
 
@@ -335,7 +350,7 @@ public class Boss1Manager : MonoBehaviour
             Vector3 dir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
             float speed = baseSpeed + Random.Range(-1.5f, 1.5f); // 속도 약간씩 다르게
 
-            GameObject bullet = Instantiate(bulletPrefab2, center, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletPrefab4, center, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
@@ -347,12 +362,12 @@ public class Boss1Manager : MonoBehaviour
     IEnumerator Boss_1Pattern5()
     {
         // 1. enemyPrefab2 두 마리 소환 (왼쪽/오른쪽)
-        GameObject leftEnemy = Instantiate(enemyPrefab2, new Vector3(-6f, 3.5f, 0), Quaternion.identity);
-        GameObject rightEnemy = Instantiate(enemyPrefab2, new Vector3(-1f, 3.5f, 0), Quaternion.identity);
+        GameObject leftEnemy = Instantiate(enemyPrefab2, new Vector3(-6f, 5f, 0), Quaternion.identity);
+        GameObject rightEnemy = Instantiate(enemyPrefab2, new Vector3(-1f, 5f, 0), Quaternion.identity);
 
         // 2. 아래로 이동
-        Vector3 leftTarget = new Vector3(-6f, 1.5f, 0);
-        Vector3 rightTarget = new Vector3(-1f, 1.5f, 0);
+        Vector3 leftTarget = new Vector3(-6f, 3f, 0);
+        Vector3 rightTarget = new Vector3(-1f, 3f, 0);
 
         float moveSpeed = 2f;
         while (Vector3.Distance(leftEnemy.transform.position, leftTarget) > 0.05f ||
@@ -405,24 +420,34 @@ public class Boss1Manager : MonoBehaviour
     // =========================
     void FireWavyBullet(Vector3 startPos)
     {
+        // 발사 위치 그대로 사용 (중앙 보정 제거)
         GameObject bullet = Instantiate(bulletPrefab2, startPos, Quaternion.identity);
         StartCoroutine(WavyMove(bullet));
     }
 
     IEnumerator WavyMove(GameObject bullet)
     {
-        float speed = 2f;         // 내려가는 속도
-        float amplitude = 1.5f;   // 좌우 흔들림 크기
-        float frequency = 3f;     // 흔들림 속도
+        float speed = 2f;        // 내려가는 속도
+        float amplitude = 2f;    // 좌우 흔들림 크기
+        float frequency = 5f;    // 흔들림 속도
         float elapsed = 0f;
 
-        Vector3 startPos = bullet.transform.position;
+        // 보스 위치 기준 (시작 x좌표 고정)
+        float centerX = bullet.transform.position.x;
 
         while (bullet != null && bullet.transform.position.y > -6f)
         {
             elapsed += Time.deltaTime;
+
+            // 중심(centerX)에서 좌우로 흔들리게
             float xOffset = Mathf.Sin(elapsed * frequency) * amplitude;
-            bullet.transform.position += new Vector3(xOffset * Time.deltaTime, -speed * Time.deltaTime, 0);
+
+            bullet.transform.position = new Vector3(
+                centerX + xOffset,
+                bullet.transform.position.y - speed * Time.deltaTime,
+                0
+            );
+
             yield return null;
         }
 

@@ -6,14 +6,13 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [Header("Prefabs")]
     public GameObject playerPrefab;
     public GameObject HP1Prefab, HP2Prefab, HP3Prefab, HP4Prefab, HP5Prefab, HP6Prefab;
-    [SerializeField] private GameObject subSystemPrefab;
 
-    [Header("UI Canvases")]
-    public GameObject GameOverCanvas;   // Game Over 전용 Canvas
-    public GameObject GameClearCanvas;  // Game Clear 전용 Canvas
+    public GameObject GameOverCanvas;   // GameOver 전용 Canvas
+    public GameObject GameClearCanvas;  // GameClear 전용 Canvas
+
+    [SerializeField] private GameObject subSystemPrefab;
 
     private Player player;
     private GameObject[] hpIcons = new GameObject[6];
@@ -21,7 +20,6 @@ public class GameManager : MonoBehaviour
 
     private bool isGameEnded = false; // ✅ GameOver/GameClear 중복 실행 방지
 
-    // -------------------- 싱글톤 --------------------
     void Awake()
     {
         if (instance == null)
@@ -38,40 +36,54 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    void Start()
+    {
+        if (SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            SpawnPlayer();
+            StartCoroutine(SpawnHPIcons());
+        }
+    }
+
     void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // -------------------- 초기화 --------------------
-    void Start()
-    {
-        SpawnPlayer();
-        StartCoroutine(SpawnHPIcons());
-    }
-
+    // ✅ sceneLoaded 이벤트 핸들러
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         StartCoroutine(InitAfterSceneLoad());
     }
 
+    // ✅ 씬 로드 후 초기화
     IEnumerator InitAfterSceneLoad()
     {
         yield return null;
 
+        // ✅ 씬에서 다시 찾고 변수에 할당
+        GameOverCanvas = GameObject.Find("GameOverCanvas");
+        GameClearCanvas = GameObject.Find("GameClearCanvas");
+
         if (GameOverCanvas != null)
             GameOverCanvas.SetActive(false);
+        else
+            Debug.LogError("⚠️ GameOverCanvas 못 찾음 (SampleScene에 있는지 확인)");
 
         if (GameClearCanvas != null)
             GameClearCanvas.SetActive(false);
+        else
+            Debug.LogError("⚠️ GameClearCanvas 못 찾음 (SampleScene에 있는지 확인)");
 
-        isGameEnded = false; // 씬 로드 시 항상 초기화
+        isGameEnded = false;
 
         if (player == null)
             SpawnPlayer();
 
         StartCoroutine(SpawnHPIcons());
     }
+
+
 
     void SpawnPlayer()
     {
@@ -87,11 +99,9 @@ public class GameManager : MonoBehaviour
         subSystemInstance = Instantiate(subSystemPrefab);
     }
 
-    // -------------------- 씬 제어 --------------------
-    // 🔴 Game Over → 현재 스테이지 재시작
+    // 🔄 현재 씬 재시작 (Game Over용)
     public void RestartScene()
     {
-        Debug.Log("▶ RestartScene 실행됨");
         StartCoroutine(RestartRoutine());
     }
 
@@ -110,15 +120,12 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.1f);
-
-        Debug.Log("씬 전환 시도: SampleScene");
         SceneManager.LoadScene("SampleScene"); // 현재 스테이지 이름
     }
 
-    // 🟢 Game Clear → MainMenu 이동
+    // 🟩 MainMenu로 이동 (Game Clear용)
     public void LoadNextStage()
     {
-        Debug.Log("▶ LoadNextStage 실행됨");
         StartCoroutine(LoadNextStageRoutine());
     }
 
@@ -137,12 +144,9 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.1f);
-
-        Debug.Log("씬 전환 시도: MainMenu");
-        SceneManager.LoadScene("MainMenu"); // ✅ 반드시 Build Settings에 등록되어 있어야 함
+        SceneManager.LoadScene("MainMenu");
     }
 
-    // -------------------- HP 아이콘 --------------------
     IEnumerator SpawnHPIcons()
     {
         Vector3[] positions = {
@@ -181,23 +185,16 @@ public class GameManager : MonoBehaviour
             SpawnSubSystem();
     }
 
-    // -------------------- GameOver / GameClear --------------------
+    // 🟥 GameOver 실행
     public void GameOver()
     {
         if (isGameEnded) return;
         isGameEnded = true;
 
-        Debug.Log("🟥 Game Over 발생");
-
         if (GameOverCanvas != null)
             GameOverCanvas.SetActive(true);
-
-        var gameOverScript = GameOverCanvas.GetComponentInChildren<GameOver>();
-        if (gameOverScript != null)
-        {
-            gameOverScript.StartCoroutine("GameOverText");
-            gameOverScript.StartCoroutine("RetryText");
-        }
+        else
+            Debug.LogError("⚠️ GameOverCanvas 못 찾음");
     }
 
     public void GameClear()
@@ -205,19 +202,11 @@ public class GameManager : MonoBehaviour
         if (isGameEnded) return;
         isGameEnded = true;
 
-        Debug.Log("🟩 Game Clear 발생");
-
         if (GameClearCanvas != null)
             GameClearCanvas.SetActive(true);
-
-        var gameClearScript = GameClearCanvas.GetComponentInChildren<GameClear>();
-        if (gameClearScript != null)
-        {
-            gameClearScript.StartCoroutine("ClearTextAnim");
-            gameClearScript.StartCoroutine("NextButtonAnim");
-        }
+        else
+            Debug.LogError("⚠️ GameClearCanvas 못 찾음");
     }
 
-    // -------------------- Getter --------------------
     public Player GetPlayer() => player;
 }

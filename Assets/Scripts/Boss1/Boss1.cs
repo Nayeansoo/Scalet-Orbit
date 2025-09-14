@@ -19,6 +19,11 @@ public class Boss1 : MonoBehaviour
         {
             DestroyBoss1();
         }
+
+        if (Input.GetKeyUp(KeyCode.Alpha0))
+        {
+            Boss1HP = 0;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
