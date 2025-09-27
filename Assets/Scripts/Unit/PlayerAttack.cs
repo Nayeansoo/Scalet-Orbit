@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public GameObject bullet;
-    public GameObject Player;
-    public Transform pos;
-    public float cooltime;
-    public float Bigcooltime;
+    public GameObject bullet;     // 발사할 총알 프리팹
+    public GameObject Player;     // 플레이어 오브젝트
+    public Transform pos;         // 총알 발사 위치
+    public float cooltime;        // 일반 공격 쿨타임
+    public float Bigcooltime;     // 필살기 쿨타임
     private float curtime;
     private float Bigcurtime;
 
@@ -21,43 +21,29 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
+        // 일반 공격
         if (curtime <= 0)
         {
             if (Input.GetKey(KeyCode.Z))
             {
-                GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-                GameObject nearestEnemy = null;
-                float shortestDistance = Mathf.Infinity;
-
-                foreach (GameObject enemy in enemies)
+                if (bullet != null)
                 {
-                    float dist = Vector2.Distance(transform.position, enemy.transform.position);
-                    if (dist < shortestDistance)
+                    // 총알 생성
+                    GameObject firedBullet = Instantiate(bullet, pos.position, pos.rotation);
+
+                    // Rigidbody2D에 속도 부여해서 직선 이동하도록 함
+                    Rigidbody2D rb = firedBullet.GetComponent<Rigidbody2D>();
+                    if (rb != null)
                     {
-                        shortestDistance = dist;
-                        nearestEnemy = enemy;
+                        rb.velocity = pos.up * 10f; // pos의 위쪽 방향으로 발사 (10은 속도)
                     }
                 }
-
-                if (bullet != null && nearestEnemy != null)
-                {
-                    Vector2 dir = (nearestEnemy.transform.position - pos.position).normalized;
-                    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
-                    GameObject firedBullet = Instantiate(bullet, pos.position, Quaternion.Euler(0, 0, angle - 90f));
-
-                    BulletFollow followScript = firedBullet.GetComponent<BulletFollow>();
-                    if (followScript != null)
-                    {
-                        followScript.target = nearestEnemy.transform;
-                    }
-                }
+                curtime = cooltime;
             }
-            curtime = cooltime;
         }
         curtime -= Time.deltaTime;
 
+        // 필살기
         if (Bigcurtime < 0)
         {
             if (Icount.ItemCount > 0)
@@ -65,10 +51,9 @@ public class PlayerAttack : MonoBehaviour
                 if (Input.GetKey(KeyCode.X))
                 {
                     Debug.Log("필살기 사용");
-                    // 모든 적 총알 찾기
+
                     GameObject[] enemyAttacks = GameObject.FindGameObjectsWithTag("EnemyAttack");
 
-                    // 가까운 순으로 정렬
                     List<GameObject> sortedAttacks = new List<GameObject>(enemyAttacks);
                     sortedAttacks.Sort((a, b) =>
                     {
@@ -77,7 +62,6 @@ public class PlayerAttack : MonoBehaviour
                         return distA.CompareTo(distB);
                     });
 
-                    // 코루틴 실행 → 순서대로 제거
                     StartCoroutine(DestroyBulletsGradually(sortedAttacks));
                     Icount.ItemCount -= 1;
                 }
@@ -97,7 +81,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 Destroy(bullet);
             }
-            yield return new WaitForSeconds(delay); // 잠깐 기다렸다가 다음 총알 제거
+            yield return new WaitForSeconds(delay);
         }
     }
 }

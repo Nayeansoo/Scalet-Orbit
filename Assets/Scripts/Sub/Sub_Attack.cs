@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Sub_Attack : MonoBehaviour
 {
-    public GameObject bullet;
-    public GameObject BigGun;
-    public GameObject Player;
-    public Transform pos;
-    public float cooltime;
-    public float Bigcooltime;
+    public GameObject bullet;     // 발사할 서브 총알 프리팹 (Sub_bullet이 붙어 있어야 함)
+    public GameObject BigGun;     // 필요시 사용
+    public GameObject Player;     // 플레이어 오브젝트
+    public Transform pos;         // 총알 발사 위치 (Sub의 앞쪽 방향 기준)
+    public float cooltime;        // 일반 공격 쿨타임
+    public float Bigcooltime;     // (필요시 사용)
     private float curtime;
     private float Bigcurtime;
 
@@ -31,33 +31,18 @@ public class Sub_Attack : MonoBehaviour
 
             if (zPressed || shiftPressed)
             {
-                Debug.Log("총알발사");
+                Debug.Log("Sub 총알 발사");
 
-                GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-                GameObject nearestEnemy = null;
-                float shortestDistance = Mathf.Infinity;
-
-                foreach (GameObject enemy in enemies)
+                if (bullet != null)
                 {
-                    float dist = Vector2.Distance(transform.position, enemy.transform.position);
-                    if (dist < shortestDistance)
+                    // 총알 생성
+                    GameObject firedBullet = Instantiate(bullet, pos.position, pos.rotation);
+
+                    // Rigidbody2D로 직선 발사
+                    Rigidbody2D rb = firedBullet.GetComponent<Rigidbody2D>();
+                    if (rb != null)
                     {
-                        shortestDistance = dist;
-                        nearestEnemy = enemy;
-                    }
-                }
-
-                if (bullet != null && nearestEnemy != null)
-                {
-                    Vector2 dir = (nearestEnemy.transform.position - pos.position).normalized;
-                    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
-                    GameObject firedBullet = Instantiate(bullet, pos.position, Quaternion.Euler(0, 0, angle - 90f));
-
-                    BulletFollow followScript = firedBullet.GetComponent<BulletFollow>();
-                    if (followScript != null)
-                    {
-                        followScript.target = nearestEnemy.transform;
+                        rb.velocity = pos.up * 10f; // pos의 "앞 방향"으로 발사 (10은 속도값, 필요시 public 변수로 빼도 됨)
                     }
                 }
 
@@ -65,5 +50,4 @@ public class Sub_Attack : MonoBehaviour
             }
         }
     }
-
 }

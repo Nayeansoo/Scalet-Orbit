@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6402785996226040761}
   - component: {fileID: 7516141306497777369}
   - component: {fileID: 6751666550022822007}
-  - component: {fileID: -458130012120114077}
   - component: {fileID: 6965395234585548186}
   m_Layer: 9
   m_Name: bullet
@@ -127,20 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f89174f3a609649884850ff8b1be57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 12
---- !u!114 &-458130012120114077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7949091141244324689}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bf0af4c0f57df144a0dc4d6286cb991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 7650275092990600295, guid: e4878191357b9d44594bb4ea6b91b7f5, type: 3}
   speed: 12
 --- !u!61 &6965395234585548186
 BoxCollider2D:

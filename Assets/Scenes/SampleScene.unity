@@ -420,7 +420,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.083
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -514,7 +514,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b306e25c29a342143898c29623f9be63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 290864232}
 --- !u!4 &290864234
 Transform:
   m_ObjectHideFlags: 0
@@ -888,7 +887,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6fcc9ed2935272b49a986098fa32653e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6235ac1566c173f4cb839ee1320ab059, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1306,7 +1305,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6fcc9ed2935272b49a986098fa32653e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6235ac1566c173f4cb839ee1320ab059, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1457,7 +1456,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1b1b537128394ac41a24927e53b3d6da, type: 3}
+  m_Sprite: {fileID: 21300000, guid: be2eeda455f723f4ab31193619e18774, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
